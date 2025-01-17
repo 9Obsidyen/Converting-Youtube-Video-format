@@ -59,7 +59,7 @@ The script also uses the `subprocess` library, which is built into Python, so no
 1. Clone this repository to your local machine:
 
 ```
-  git clone https://github.com/yourusername/video-download-and-convert.git
+  git clone https://github.com/9Fahrenheit/Converting-Youtube-video-to-avi-format.git
 ```
 
 2. Navigate to the script directory:
