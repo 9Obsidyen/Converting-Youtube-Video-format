@@ -65,13 +65,13 @@ The script also uses the `subprocess` library, which is built into Python, so no
 2. Navigate to the script directory:
 
 ```
-  cd video-download-and-convert
+    cd Converting-Youtube-video-to-avi-format
 ```
 
 3. Run the script:
 
 ```
-  python script_name.py
+  python main.py
 ```
 
 
@@ -87,8 +87,4 @@ The script also uses the `subprocess` library, which is built into Python, so no
 
 - If you encounter an error stating that `ffmpeg` is not found, make sure it is installed and added to your system’s PATH.
 - If the download fails, check if the URL is correct or if there are issues with the YouTube video.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
