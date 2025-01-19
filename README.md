@@ -19,72 +19,105 @@ This script requires Python 3.x. You can download Python from [here](https://www
 To install `yt-dlp`, run the following command in your terminal or command prompt:
 
 ```
-  pip install yt-dlp
+pip install yt-dlp
 ```
+
 
 ### 3. FFmpeg
 `ffmpeg` is a powerful multimedia processing tool used to convert videos between formats. You need to have `ffmpeg` installed on your system to convert videos.
 
 #### For Windows:
-1. Download the FFmpeg Windows build from [FFmpeg official website](https://ffmpeg.org/download.html).
-2. Extract the contents and add the `bin` folder to your system’s PATH environment variable. This will allow you to use `ffmpeg` from the command line.
+
+1. Download the FFmpeg Windows build from the [FFmpeg official website](https://ffmpeg.org/download.html).
+   - Select **Windows** and then choose **Windows builds by BtbN** or **Gyan** for a precompiled version.
+   
+2. Extract the contents of the downloaded zip file.
+   - You will see a folder named `ffmpeg`.
+
+3. Add the `bin` folder to your system's PATH environment variable:
+   - **Right-click on 'This PC' (or 'My Computer') > Properties**.
+   - Click on **Advanced system settings** on the left.
+   - Click **Environment Variables**.
+   - Under **System Variables**, scroll to find the **Path** variable and select it.
+   - Click **Edit**.
+   - Add the full path of the `bin` directory inside the extracted FFmpeg folder (e.g., `C:\ffmpeg\bin`).
+   - Click **OK** to save the changes.
+
+4. Verify FFmpeg installation:
+   - Open a Command Prompt and type:
+     ```
+     ffmpeg -version
+     ```
+   - If FFmpeg is correctly installed, it should display version information.
 
 #### For macOS:
-You can install `ffmpeg` using Homebrew:
 
-```
-  brew install ffmpeg
-```
+1. You can install `ffmpeg` using [Homebrew](https://brew.sh/):
+   - First, ensure you have Homebrew installed. If not, run:
+     ```
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     ```
+   - Then, install FFmpeg using:
+     ```
+     brew install ffmpeg
+     ```
+   
+2. Verify FFmpeg installation:
+   - Open the Terminal and type:
+     ```
+     ffmpeg -version
+     ```
+   - If installed correctly, you should see version information.
 
 #### For Linux (Ubuntu/Debian):
-To install `ffmpeg`, run:
+
+1. To install `ffmpeg`, run the following commands:
 
 ```
-  sudo apt update
-  sudo apt install ffmpeg
+sudo apt update sudo apt install ffmpeg
 ```
 
-Make sure that FFmpeg is added to your PATH. You can verify its installation by running:
 
-```
+2. Verify FFmpeg installation:
+- Open a terminal and type:
+  ```
   ffmpeg -version
-```
-
+  ```
+- If FFmpeg is correctly installed, it will display version details.
 
 ### 4. Dependencies:
-The script also uses the `subprocess` library, which is built into Python, so no additional installation is needed for it.
+The script uses the `subprocess` library, which is built into Python, so no additional installation is needed for it.
 
 ## Usage
 
 1. Clone this repository to your local machine:
 
 ```
-  git clone https://github.com/9Fahrenheit/Converting-Youtube-video-to-avi-format.git
+git clone https://github.com/9Fahrenheit Converting-Youtube-video-to-avi-format.git
 ```
 
 2. Navigate to the script directory:
 
 ```
-    cd Converting-Youtube-video-to-avi-format
+cd Converting-Youtube-video-to-avi-format
 ```
 
 3. Run the script:
 
 ```
-  python main.py
+python main.py
 ```
-
 
 4. When prompted, paste the YouTube video URL that you wish to download and convert.
 
 ## Notes
 
-- Ensure that `ffmpeg` is correctly installed and accessible via your system’s PATH.
+- **Ensure that `ffmpeg` is correctly installed and accessible via your system’s PATH.**
 - The script will download the video, select the best available format (preferably 720p), and save it as `downloaded_video.mp4`.
 - After the download, it will convert the video to `converted_video.avi` using `ffmpeg`.
 
 ## Troubleshooting
 
-- If you encounter an error stating that `ffmpeg` is not found, make sure it is installed and added to your system’s PATH.
-- If the download fails, check if the URL is correct or if there are issues with the YouTube video.
+- **FFmpeg Not Found**: If you encounter an error stating that `ffmpeg` is not found, ensure that FFmpeg is installed and added to your system’s PATH. You can verify it by running `ffmpeg -version` in the terminal.
+- **Download Failures**: If the download fails, check if the URL is correct or if there are issues with the YouTube video (e.g., region restrictions or private video settings).
 
