@@ -1,99 +1,62 @@
-# Video Download and Convert Script
+# YouTube Video Downloader & Converter
 
 ## Description
 
-This Python script allows users to download videos from YouTube using `yt-dlp`,  
-with the ability to select the best available video format (preferably 720p resolution).  
-It also supports converting the downloaded video to AVI format using `ffmpeg`,  
-with the audio converted to MP3.  
-This tool is ideal for users who need to download YouTube videos and convert them to a specific format for offline use or further editing.
+This Python script allows you to download videos from YouTube and convert them into various formats. Supported formats include `avi`, `mp4`, `mov`, `mkv`, and `flv`. After the video is downloaded, it will be converted into the selected format and resolution using FFmpeg.
 
-## Installation
-
-Before running the script, ensure you have the following dependencies installed:
+## Requirements
 
 ### 1. Python
 This script requires Python 3.x. You can download Python from [here](https://www.python.org/downloads/).
 
 ### 2. yt-dlp
-To install `yt-dlp`, run the following command in your terminal or command prompt:
+`yt-dlp` is a Python library that allows you to download videos from YouTube. To install `yt-dlp`, run the following command in your terminal or command prompt:
 
-```
 pip install yt-dlp
-```
-
 
 ### 3. FFmpeg
-`ffmpeg` is a powerful multimedia processing tool used to convert videos between formats. You need to have `ffmpeg` installed on your system to convert videos.
+FFmpeg is a powerful multimedia framework that is required for video conversion. You need to install FFmpeg on your system for the script to work.
 
-#### For Windows:
-
+#### Windows:
 1. Download the FFmpeg Windows build from the [FFmpeg official website](https://ffmpeg.org/download.html).
-   - Select **Windows** and then choose **Windows builds by BtbN** or **Gyan** for a precompiled version.
-   
-2. Extract the contents of the downloaded zip file.
-   - You will see a folder named `ffmpeg`.
+2. Extract the files and add the `bin` folder to your system's `PATH` environment variable. This allows you to run `ffmpeg` from anywhere in the command line.
+3. To check if FFmpeg is installed correctly, run the following command in the command prompt:
 
-3. Add the `bin` folder to your system's PATH environment variable:
-   - **Right-click on 'This PC' (or 'My Computer') > Properties**.
-   - Click on **Advanced system settings** on the left.
-   - Click **Environment Variables**.
-   - Under **System Variables**, scroll to find the **Path** variable and select it.
-   - Click **Edit**.
-   - Add the full path of the `bin` directory inside the extracted FFmpeg folder (e.g., `C:\ffmpeg\bin`).
-   - Click **OK** to save the changes.
+```
+ffmpeg -version
+```
 
-4. Verify FFmpeg installation:
-   - Open a Command Prompt and type:
-     ```
-     ffmpeg -version
-     ```
-   - If FFmpeg is correctly installed, it should display version information.
+#### macOS:
+You can install FFmpeg using Homebrew on macOS:
 
-#### For macOS:
+```
+brew install ffmpeg
+```
 
-1. You can install `ffmpeg` using [Homebrew](https://brew.sh/):
-   - First, ensure you have Homebrew installed. If not, run:
-     ```
-     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-     ```
-   - Then, install FFmpeg using:
-     ```
-     brew install ffmpeg
-     ```
-   
-2. Verify FFmpeg installation:
-   - Open the Terminal and type:
-     ```
-     ffmpeg -version
-     ```
-   - If installed correctly, you should see version information.
-
-#### For Linux (Ubuntu/Debian):
-
-1. To install `ffmpeg`, run the following commands:
+#### Linux (Ubuntu/Debian):
+To install FFmpeg on Ubuntu/Debian systems, run the following commands:
 
 ```
 sudo apt update sudo apt install ffmpeg
 ```
 
+To verify the installation, run:
 
-2. Verify FFmpeg installation:
-- Open a terminal and type:
-  ```
-  ffmpeg -version
-  ```
-- If FFmpeg is correctly installed, it will display version details.
+```
+ffmpeg -version
+```
 
-### 4. Dependencies:
-The script uses the `subprocess` library, which is built into Python, so no additional installation is needed for it.
+Make sure FFmpeg is added to your system's `PATH` environment variable.
+
+### 4. Other Requirements:
+The script also uses the built-in Python `subprocess` library, so no additional installation is required for that.
 
 ## Usage
 
 1. Clone this repository to your local machine:
 
 ```
-git clone https://github.com/9Fahrenheit Converting-Youtube-video-to-avi-format.git
+git clone https://github.com/9Fahrenheit/Converting-Youtube-video-to-avi-format.git
 ```
 
 2. Navigate to the script directory:
@@ -108,16 +71,37 @@ cd Converting-Youtube-video-to-avi-format
 python main.py
 ```
 
-4. When prompted, paste the YouTube video URL that you wish to download and convert.
+4. When the script is run, you will be prompted to enter the YouTube video URL, the resolution (e.g., `720p`, `1080p`), and the desired video format (e.g., `avi`, `mp4`, `mov`, `mkv`, `flv`).
 
-## Notes
+### Example Usage:
 
-- **Ensure that `ffmpeg` is correctly installed and accessible via your system’s PATH.**
-- The script will download the video, select the best available format (preferably 720p), and save it as `downloaded_video.mp4`.
-- After the download, it will convert the video to `converted_video.avi` using `ffmpeg`.
+```
+Enter the YouTube video URL: https://www.youtube.com/watch?v=dQw4w9WgXcQ 
+Enter the desired resolution (e.g., 720p, 1080p, 2k, 4k): 720p 
+Enter the desired output format (avi, mp4, mov, mkv, flv): mp4
+```
+
+## How It Works
+
+1. The script takes the YouTube video URL and uses `yt-dlp` to download the video in the specified resolution.
+2. After downloading, the video file is converted to the selected format using `ffmpeg`.
+3. The converted video is saved in the chosen format.
+
+## Supported Video Formats
+
+The script supports converting videos to the following formats:
+- **AVI**: Converted using `libxvid` video codec and `libmp3lame` audio codec.
+- **MP4**: Converted using `libx264` video codec and `aac` audio codec.
+- **MOV**: Converted using `prores_ks` video codec and `pcm_s16le` audio codec.
+- **MKV**: Converted using `libx264` video codec and `aac` audio codec.
+- **FLV**: Converted using `flv` video codec and `aac` audio codec.
 
 ## Troubleshooting
 
-- **FFmpeg Not Found**: If you encounter an error stating that `ffmpeg` is not found, ensure that FFmpeg is installed and added to your system’s PATH. You can verify it by running `ffmpeg -version` in the terminal.
-- **Download Failures**: If the download fails, check if the URL is correct or if there are issues with the YouTube video (e.g., region restrictions or private video settings).
+- **FFmpeg not found error**: If you encounter an error indicating that FFmpeg is not found, make sure it is installed correctly. You can verify its installation by running `ffmpeg -version` in your terminal.
+  
+- **Video download failure**: Ensure the YouTube URL is correct and the video is accessible. There may also be issues related to video quality or format compatibility.
 
+## Contribution
+
+This project is open-source and contributions are welcome. Feel free to submit pull requests!
