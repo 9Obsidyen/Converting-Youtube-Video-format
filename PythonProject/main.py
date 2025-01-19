@@ -17,13 +17,13 @@ def check_ffmpeg_installed():
     except subprocess.CalledProcessError:
         raise Exception("FFmpeg installation is incorrect or FFmpeg could not be executed.")
 
-    
-def download_and_convert_video(url, resolution='720p'):
+
+def download_and_convert_video(url, resolution='720p', output_format='avi'):
     """
-    Downloads a YouTube video and converts it into an AVI file using FFmpeg.
+    Downloads a YouTube video and converts it into the desired format using FFmpeg.
     
     - Downloads the video in the specified resolution (e.g., 720p, 1080p, etc.).
-    - Converts the downloaded video to AVI format using the 'libxvid' video codec and 'mp3' audio codec.
+    - Converts the downloaded video to the specified format using FFmpeg.
     """
     
     # Function to list all available formats for a given YouTube URL
@@ -81,8 +81,8 @@ def download_and_convert_video(url, resolution='720p'):
             ydl.download([url])
         print(f"Video successfully downloaded in {selected_format['format_id']} format.")
 
-    # Function to convert the downloaded video to AVI format using FFmpeg
-    def convert_to_avi(input_file, output_file):
+    # Function to convert the downloaded video to the desired format using FFmpeg
+    def convert_to_format(input_file, output_file, output_format):
         try:
             # Check if FFmpeg is installed and accessible in the system's PATH
             check_ffmpeg_installed()
@@ -91,13 +91,27 @@ def download_and_convert_video(url, resolution='720p'):
             cmd = [
                 "ffmpeg",  # FFmpeg is assumed to be available globally via PATH
                 "-i", input_file,  # Input file path
-                "-c:v", "libxvid",  # Video codec: libxvid (for AVI format)
-                "-c:a", "mp3",  # Audio codec: mp3
-                output_file  # Output file path
             ]
+            
+            # Set the output format and codecs based on the desired format
+            if output_format == "avi":
+                cmd += ["-c:v", "libxvid", "-c:a", "libmp3lame"]  # Use libmp3lame for MP3 audio codec in AVI
+            elif output_format == "mp4":
+                cmd += ["-c:v", "libx264", "-c:a", "aac"]  # Use libx264 for video and AAC for audio in MP4
+            elif output_format == "mov":
+                cmd += ["-c:v", "prores_ks", "-c:a", "pcm_s16le"]  # Use ProRes for MOV video and PCM audio
+            elif output_format == "mkv":
+                cmd += ["-c:v", "libx264", "-c:a", "aac"]  # MKV with libx264 and AAC
+            elif output_format == "flv":
+                cmd += ["-c:v", "flv", "-c:a", "aac"]  # FLV format with H.264 video and AAC audio
+            else:
+                raise Exception(f"Unsupported format: {output_format}")
+
+            cmd.append(output_file)  # Output file path
+
             # Run the FFmpeg command
             subprocess.run(cmd, check=True)
-            print(f"Video successfully converted to AVI format. Output saved as: {output_file}")
+            print(f"Video successfully converted to {output_format.upper()} format. Output saved as: {output_file}")
 
         except subprocess.CalledProcessError as e:
             # Handle errors during the conversion process
@@ -106,12 +120,20 @@ def download_and_convert_video(url, resolution='720p'):
             # If FFmpeg is not installed or not in PATH, raise an exception
             raise Exception("FFmpeg is not installed. Please install FFmpeg to proceed!")
 
-    # Download the video and convert it to AVI format
+    # Download the video and convert it to the selected format
     download_video(url, resolution)
-    convert_to_avi("downloaded_video.mp4", "converted_video.avi")
+    convert_to_format("downloaded_video.mp4", f"converted_video.{output_format}", output_format)
 
 
-# Prompt the user to input the YouTube video URL and desired resolution
+# Prompt the user to input the YouTube video URL, desired resolution, and output format
 url = input("Enter the YouTube video URL: ")
 resolution = input("Enter the desired resolution (e.g., 720p, 1080p, 2k, 4k): ")
-download_and_convert_video(url, resolution)
+output_format = input("Enter the desired output format (avi, mp4, mov, mkv, flv): ").lower()
+
+# Ensure the user enters a valid format
+valid_formats = ['avi', 'mp4', 'mov', 'mkv', 'flv']
+if output_format not in valid_formats:
+    print(f"Invalid format '{output_format}' entered. Defaulting to 'avi'.")
+    output_format = 'avi'
+
+download_and_convert_video(url, resolution, output_format)
