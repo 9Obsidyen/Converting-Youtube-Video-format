@@ -62,7 +62,7 @@ git clone https://github.com/9Fahrenheit/Converting-Youtube-video-to-avi-format.
 2. Navigate to the script directory:
 
 ```
-cd Converting-Youtube-video-to-avi-format
+cd Converting-Youtube-Video-format
 ```
 
 3. Run the script:
