@@ -5,18 +5,19 @@ import os
 
 def check_ffmpeg_installed():
     """
-    Checks if FFmpeg is installed in the 'ffmpeg/bin' directory relative to the location of 'main.py'.
-    Ensures that the FFmpeg executable is found in the correct directory.
+    Checks if FFmpeg is installed on the system and accessible through the PATH environment variable.
+    If FFmpeg is not found, raise an error.
     """
-    ffmpeg_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "ffmpeg", "bin", "ffmpeg.exe")
-    
-    # If FFmpeg executable is not found in the specified directory, raise an error
-    if not os.path.exists(ffmpeg_path):
-        raise Exception("FFmpeg.exe not found. Please ensure 'ffmpeg/bin' is in the same directory as 'main.py'.")
-    
-    return ffmpeg_path
+    try:
+        # Try to get FFmpeg's version to confirm it's installed
+        subprocess.run(["ffmpeg", "-version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("FFmpeg is installed and accessible.")
+    except FileNotFoundError:
+        raise Exception("FFmpeg is not installed or not found in the system's PATH. Please install FFmpeg and ensure it's in the PATH.")
+    except subprocess.CalledProcessError:
+        raise Exception("FFmpeg installation is incorrect or FFmpeg could not be executed.")
 
-
+    
 def download_and_convert_video(url, resolution='720p'):
     """
     Downloads a YouTube video and converts it into an AVI file using FFmpeg.
@@ -83,12 +84,12 @@ def download_and_convert_video(url, resolution='720p'):
     # Function to convert the downloaded video to AVI format using FFmpeg
     def convert_to_avi(input_file, output_file):
         try:
-            # Check if FFmpeg is installed in the 'ffmpeg/bin' directory
-            ffmpeg_path = check_ffmpeg_installed()
+            # Check if FFmpeg is installed and accessible in the system's PATH
+            check_ffmpeg_installed()
 
             # Construct the FFmpeg command for video conversion
             cmd = [
-                ffmpeg_path,  # Path to FFmpeg executable
+                "ffmpeg",  # FFmpeg is assumed to be available globally via PATH
                 "-i", input_file,  # Input file path
                 "-c:v", "libxvid",  # Video codec: libxvid (for AVI format)
                 "-c:a", "mp3",  # Audio codec: mp3
@@ -102,7 +103,7 @@ def download_and_convert_video(url, resolution='720p'):
             # Handle errors during the conversion process
             print(f"An error occurred during the conversion: {e}")
         except FileNotFoundError:
-            # If FFmpeg is not installed, raise an exception
+            # If FFmpeg is not installed or not in PATH, raise an exception
             raise Exception("FFmpeg is not installed. Please install FFmpeg to proceed!")
 
     # Download the video and convert it to AVI format
